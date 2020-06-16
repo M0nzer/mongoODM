@@ -16,13 +16,26 @@ connect.then((db) => {
         .then((dish) => {
             console.log(dish);
 
-            return Dishes.find({});
+            return Dishes.findByIdAndUpdate(dish._id,{
+                $set : {description: "updated text"}
+            },{
+                new : true
+            }).exec();
         })
-        .then((dishes) => {
-            console.log(dishes);
+        .then((dish) => {
+            console.log(dish);
 
-            return Dishes.remove({});
+            dish.comment.push({
+                reating : 5,
+                comment : "hi im monzer",
+                auther : "monzer too"
+            });
+            return dish.save();
         })
+        .then((dish)=>{
+            console.log(dish);
+            return Dishes.remove({});
+        }) 
         .then(() => {
             return mongoose.connection.close();
         })
